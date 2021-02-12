@@ -2,3 +2,6 @@
 mkdir -pv build/gen
 aapt package -f -m -J build/gen -M AndroidManifest.xml -S res -I /usr/lib/android-sdk/platforms/android-24/android.jar
 -- build/gen/ru/yuryreshetnikov/caller/R.java
+javac -classpath /usr/lib/android-sdk/platforms/android-24/android.jar -d build/obj build/gen/ru/yuryreshetnikov/caller/R.java
+javac -classpath /usr/lib/android-sdk/platforms/android-24/android.jar -d build/obj java/ru/yuryreshetnikov/caller/SettingActivity.java
+javac -classpath /usr/lib/android-sdk/platforms/android-24/android.jar -d build/obj java/ru/yuryreshetnikov/caller/IncomingCall.java java/ru/yuryreshetnikov/caller/CallService.java
