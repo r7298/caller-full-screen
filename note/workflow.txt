@@ -1,7 +1,18 @@
+!2021-02-13 00:11:54
+keytool -genkeypair -keystore ~/.hidden/keystore.jks -alias androidkey \
+      -validity 10000 -keyalg RSA -keysize 2048 \
+      -storepass android -keypass android
+
 !2021-02-12 20:30:58
 mkdir -pv build/gen
 aapt package -f -m -J build/gen -M AndroidManifest.xml -S res -I /usr/lib/android-sdk/platforms/android-24/android.jar
 -- build/gen/ru/yuryreshetnikov/caller/R.java
-javac -classpath /usr/lib/android-sdk/platforms/android-24/android.jar -d build/obj build/gen/ru/yuryreshetnikov/caller/R.java
-javac -classpath /usr/lib/android-sdk/platforms/android-24/android.jar -d build/obj java/ru/yuryreshetnikov/caller/SettingActivity.java
-javac -classpath /usr/lib/android-sdk/platforms/android-24/android.jar -d build/obj java/ru/yuryreshetnikov/caller/IncomingCall.java java/ru/yuryreshetnikov/caller/CallService.java
+rm -R build/obj
+javac -source 1.7 -target 1.7 -bootclasspath /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar -classpath /usr/lib/android-sdk/platforms/android-24/android.jar -d build/obj build/gen/ru/yuryreshetnikov/caller/R.java java/ru/yuryreshetnikov/caller/*.java
+mkdir -pv build/apk
+/usr/lib/android-sdk/build-tools/debian/dx --dex --output=build/apk/classes.dex build/obj
+aapt package -f -M AndroidManifest.xml -S res -I /usr/lib/android-sdk/platforms/android-24/android.jar -F build/Caller.unsigned.apk build/apk
+zipalign -f 4 build/Caller.unsigned.apk build/Caller.aligned.apk
+apksigner sign --ks ~/.hidden/keystore.jks \
+  --ks-key-alias androidkey --ks-pass pass:android \
+  --key-pass pass:android --out build/Caller.apk build/Caller.aligned.apk
