@@ -17,8 +17,9 @@ public class IncomingCall extends BroadcastReceiver {
 	    this.context = context;
 	    TelephonyManager tmgr = (TelephonyManager) context
 		.getSystemService(Context.TELEPHONY_SERVICE);
-	    MyPhoneStateListener PhoneListener = new MyPhoneStateListener();
-	    tmgr.listen(PhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+	    MyPhoneStateListener phone_listener = new MyPhoneStateListener();
+	    tmgr.listen(phone_listener,
+			PhoneStateListener.LISTEN_CALL_STATE);
 	}
 	catch (Exception e) {
 	    Log.e("Phone Receive Error", " " + e);
