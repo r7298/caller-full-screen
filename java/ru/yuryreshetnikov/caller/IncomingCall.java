@@ -28,7 +28,7 @@ public class IncomingCall extends BroadcastReceiver {
 
     private class MyPhoneStateListener extends PhoneStateListener {
 	public void onCallStateChanged(int state, String incomingNumber) {
-	    Log.d("MyPhoneListener",
+	    Log.d(getClass().getName(),
 		  state + " incoming no:" + incomingNumber);
 	    if (state == 1) {
 		Toast.makeText(context, "incoming no:" + incomingNumber,
